@@ -6,10 +6,13 @@ st.title("⏱️ เกมเติมศัพท์จับเวลา")
 # 1. กำหนดค่าเริ่มต้นใน session_state ถ้ายังไม่มี
 if "ans1_val" not in st.session_state:
     st.session_state.ans1_val = ""
+
 if "ans2_val" not in st.session_state:
     st.session_state.ans2_val = ""
+
 if "ans3_val" not in st.session_state:
     st.session_state.ans3_val = ""
+
 if "ans4_val" not in st.session_state:
     st.session_state.ans4_val = ""
 
@@ -44,13 +47,13 @@ def show_result_dialog(ans1, ans2):
     else:
         st.error(f"❌ ข้อ 1: ยังไม่ถูกต้อง (คุณตอบ '{u_ans1}')")
 
-    # ตรวจข้อ 2
+
     if u_ans2 == "fish":
         st.success("✅ ข้อ 2: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
-    # ตรวจข้อ 3
+
    
     if u_ans3 == "banana":
         st.success("✅ ข้อ 3: ถูกต้อง")
@@ -116,11 +119,12 @@ st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
 st.session_state.ans3_val = ans3
 st.session_state.ans4_val = ans4
-# ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มข้อ 3, 4 ตรงนี้
+
 
 
 # 4. ปุ่มส่งคำตอบ
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
+    
     if st.button("📥 ส่งคำตอบ"):
         st.session_state.is_ended = True
         st.rerun()
@@ -129,6 +133,7 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
     st.rerun()
 
 # 5. แสดง Dialog ผลลัพธ์
+
 if st.session_state.get("is_ended", False):
     show_result_dialog(ans1, ans2 , ans3 , ans4)
 
