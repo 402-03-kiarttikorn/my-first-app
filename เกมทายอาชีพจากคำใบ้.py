@@ -111,8 +111,7 @@ def show_result_dialog(ans1, ans2, ans3, ans4, ans5, ans6, ans7):
     elif 4 <= score <= 6:
      st.info("👍🐶🫦🤙🤫 เก่งมาก! กู๊ดบอย")
     elif score == 7:
-     st.success("🎉👑😲🥺😈
- You win! สวดยอดคร้าบจาร")
+     st.success("🎉👑😲🥺😈You win! สวดยอดคร้าบจาร")
     else:
      st.error("❌ คะแนนไม่อยู่ในระบบ (กรุณาตรวจสอบข้อผิดพลาด)")
 
