@@ -1,0 +1,215 @@
+import time
+import streamlit as st
+
+st.title("⏱️ เกมทายอาชีพจากคำใบ้จับเวลา")
+
+# ==========================================
+# ตั้งค่าเริ่มต้น
+# ==========================================
+
+if "game_started" not in st.session_state:
+    st.session_state.game_started = False
+
+if "game_ended" not in st.session_state:
+    st.session_state.game_ended = False
+
+if "start_time" not in st.session_state:
+    st.session_state.start_time = None
+
+if "show_result" not in st.session_state:
+    st.session_state.show_result = False
+
+
+# ==========================================
+# เริ่มเกมใหม่
+# ==========================================
+
+def reset_game():
+
+    # ล้างคำตอบเก่าทั้งหมด
+    st.session_state.ans1 = ""
+    st.session_state.ans2 = ""
+    st.session_state.ans3 = ""
+    st.session_state.ans4 = ""
+    st.session_state.ans5 = ""
+    st.session_state.ans6 = ""
+    st.session_state.ans7 = ""
+
+    # เริ่มจับเวลาใหม่
+    st.session_state.start_time = time.time()
+
+    st.session_state.game_started = True
+    st.session_state.game_ended = False
+    st.session_state.show_result = False
+
+
+# ==========================================
+# ปุ่มเริ่มเกม
+# ==========================================
+
+if st.button("🎮 เริ่มเล่นเกม", type="primary"):
+    reset_game()
+    st.rerun()
+
+
+# ==========================================
+# คำตอบที่ถูก
+# ==========================================
+
+correct_answers = [
+    "ตำรวจ",
+    "หมอ",
+    "ครู",
+    "พยาบาล",
+    "นักบินอวกาศ",
+    "นักดับเพลิง",
+    "จิตรกร"
+]
+
+
+# ==========================================
+# ถ้าเริ่มเกมแล้ว
+# ==========================================
+
+if st.session_state.game_started:
+
+    # --------------------------------------
+    # ตรวจสอบเวลา
+    # --------------------------------------
+
+    elapsed_time = time.time() - st.session_state.start_time
+    time_left = max(0, int(60 - elapsed_time))
+
+    if not st.session_state.game_ended:
+
+        st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
+
+        # ----------------------------------
+        # คำถาม
+        # ----------------------------------
+
+        ans1 = st.text_input(
+            "ข้อ 1: อะไรเอ่ยชอบทำหน้าเข้ม สุดท้ายวิ่งเล่นไล่จับทรงเอ",
+            key="ans1"
+        )
+
+        ans2 = st.text_input(
+            "ข้อ 2: อะไรเอ่ยชอบบอกให้เราลดน้ำหนักแถมบอกอ้วนขึ้นนะครับเบาหวานคิดถึง",
+            key="ans2"
+        )
+
+        ans3 = st.text_input(
+            "ข้อ 3: อะไรเอ่ยชอบสั่งงานแถมให้การบ้านอย่างกับทอร์นาโด",
+            key="ans3"
+        )
+
+        ans4 = st.text_input(
+            "ข้อ 4: อะไรเอ่ยชอบของมีคมบอกตรงๆ เจ็บเหมือนมดกัดนิดเดียวค่ะ",
+            key="ans4"
+        )
+
+        ans5 = st.text_input(
+            "ข้อ 5: อะไรเอ่ยชอบใส่หมวกกันนอกลอยขึ้นฟ้า",
+            key="ans5"
+        )
+
+        ans6 = st.text_input(
+            "ข้อ 6: อะไรเอ่ยชอบดับไฟที่ร้อนแรงยิ่งกว่าอยู่ในปาร์ตี้ร้อนอย่างกับไฟเยอร์",
+            key="ans6"
+        )
+
+        ans7 = st.text_input(
+            "ข้อ 7: อะไรเอ่ยจินตนาการสำคัญกว่าความคิดเลยติดอยู่กับเทปแปะกล้วย",
+            key="ans7"
+        )
+
+        # ----------------------------------
+        # ปุ่มส่งคำตอบ
+        # ----------------------------------
+
+        if st.button("📥 ส่งคำตอบ", type="primary"):
+
+            st.session_state.game_ended = True
+            st.session_state.show_result = True
+
+            st.rerun()
+
+        # ----------------------------------
+        # ถ้าหมดเวลา
+        # ----------------------------------
+
+        if time_left <= 0:
+
+            st.session_state.game_ended = True
+            st.session_state.show_result = True
+
+            st.rerun()
+
+
+# ==========================================
+# แสดงผลคะแนน
+# ==========================================
+
+if st.session_state.show_result:
+
+    st.divider()
+
+    st.subheader("📊 สรุปผลการเล่นเกม")
+
+    answers = [
+        st.session_state.get("ans1", ""),
+        st.session_state.get("ans2", ""),
+        st.session_state.get("ans3", ""),
+        st.session_state.get("ans4", ""),
+        st.session_state.get("ans5", ""),
+        st.session_state.get("ans6", ""),
+        st.session_state.get("ans7", "")
+    ]
+
+    score = 0
+
+    for i in range(7):
+
+        user_answer = answers[i].strip().lower()
+        correct_answer = correct_answers[i]
+
+        if user_answer == correct_answer:
+
+            st.success(f"✅ ข้อ {i + 1}: ถูกต้อง")
+            score += 1
+
+        else:
+
+            st.error(
+                f"❌ ข้อ {i + 1}: ไม่ถูกต้อง "
+                f"(คุณตอบ '{user_answer}')"
+            )
+
+    st.info(f"🏆 ได้คะแนนรวม: {score} / 7 คะแนน")
+
+    if score == 0:
+
+        st.error("💀 You lose! แพ้เกม")
+
+    elif 1 <= score <= 3:
+
+        st.warning("📉 You lose! พยายามอีกนิดนะ")
+
+    elif 4 <= score <= 6:
+
+        st.info("👍 เก่งมาก! อีกนิดเดียว")
+
+    elif score == 7:
+
+        st.success("🎉 You win! ระดับนักปราชญ์")
+
+    st.balloons()
+
+
+# ==========================================
+# ข้อมูลกลุ่ม
+# ==========================================
+
+st.divider()
+
+st.write("กลุ่ม 6 เลขที่ 1 3 21 26 ม.4/2")
