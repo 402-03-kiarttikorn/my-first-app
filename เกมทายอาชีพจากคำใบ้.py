@@ -104,16 +104,16 @@ def show_result_dialog(ans1, ans2, ans3, ans4, ans5, ans6, ans7):
 
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
-   if score == 0:
-    st.error("💀 You lose! แพ้เกม")
-   elif 1 <= score <= 3:
-    st.warning("📉 You lose! พยายามอีกนิดนะ")
-   elif 4 <= score <= 6:
-    st.info("👍 เก่งมาก! อีกนิดเดียว")
-   elif score == 7:
-    st.success("🎉 You win! ระดับนักปราชญ์")
-   else:
-    st.error("❌ คะแนนไม่อยู่ในระบบ (กรุณาตรวจสอบข้อผิดพลาด)")
+    if score == 0:
+     st.error("💀 You lose! แพ้เกม")
+    elif 1 <= score <= 3:
+     st.warning("📉 You lose! พยายามอีกนิดนะ")
+    elif 4 <= score <= 6:
+     st.info("👍 เก่งมาก! อีกนิดเดียว")
+    elif score == 7:
+     st.success("🎉 You win! ระดับนักปราชญ์")
+    else:
+     st.error("❌ คะแนนไม่อยู่ในระบบ (กรุณาตรวจสอบข้อผิดพลาด)")
 
 
 
